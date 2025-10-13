@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { BannerSlider } from '../features/BannerSlider.jsx';
+import '../styles/global.css';
+import TitleSection from '../components/TitleSection.astro';
+import Card from '../components/Card.astro';
+---
+
+<Layout title="FELAC || Federación Latinoamericana de Cirugía" description="Federación Latinoamericana de Cirugía - Uniendo la excelencia quirúrgica en América Latina">
+	<!-- Banner Swiper -->
+	<BannerSlider client:load />
+
+	<section class="text-center my-8 px-4 md:px-16 lg:px-32">
+	
+		<TitleSection title="FELAC" />
+
+		<p>
+			Organización que agrupa a todas las sociedades y asociaciones de cirugía en nuestra región, en beneficio de la población de todos nuestros países, mediante múltiples actividades de superación y desarrollo, entre las cuales se destacan los congresos bienales y las reuniones regionales que se celebren en los años intermedios entre los congresos. <br /><br />
+			
+			La FELAC es reconocida como representante de la cirugía en Latinoamerica por las mas importantes asociaciones internacionales de cirugía, tales como la International Society of Sugery(ISS/SIC) y la International Federation of Societies of endoscopic Sugery(IFSES). American College of surgeons(ACS).
+		</p>
+	</section>
+
+	<section class="my-8 px-4 md:px-16 lg:px-32">
+		<TitleSection title="Explore FELAC" />
+
+		<div class="grid grid-cols-1 md:grid-cols-2  gap-6">
+			<Card image="/img/home/homeSampleImg.png" title="Sociedad Internacional de Cirugía" />
+			<Card image="/img/home/homeSampleImg2.png" title="Eventos y Congresos" />
+			<Card image="/img/home/homeSampleImg3.png" title="Revisión de casos interesantes" />
+			<Card image="/img/home/homeSampleImg4.png" title="Boletín Reciente" />
+
+		</div>
+	</section>
+</Layout>

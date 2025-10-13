@@ -1,0 +1,106 @@
+---
+import { LuInstagram } from "react-icons/lu";
+import { FaFacebookF } from "react-icons/fa";
+---
+
+<footer class="bg-[#969696] text-white">
+  <!-- Body -->
+  <div class="max-w-7xl mx-auto p-4 md:p-8">
+    <img
+      src="/img/home/logoEvento.png"
+      alt="Logo Federación"
+      class="h-12 sm:h-16 md:h-20 lg:h-24 mb-6 mx-auto md:mx-0"
+    />
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <!-- Información de contacto -->
+      <div class="space-y-2">
+        <h3 class="text-lg font-semibold mb-3 text-center md:text-left">
+          Contacto
+        </h3>
+        <div class="text-sm sm:text-base text-center md:text-left space-y-1">
+          <p>Dirección Calle 100 # 14 - 63</p>
+          <p>Oficina 502 Bogotá, Colombia</p>
+          <p>Tel: 2574560 - 2574501</p>
+          <p>Correo: felacred@gmail.com</p>
+        </div>
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-semibold mb-3">Enlaces rápidos</h3>
+        <div class="flex flex-col space-y-2 text-sm sm:text-base">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-200 transition-colors">Historia</a
+          >
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-200 transition-colors">Contacto</a
+          >
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-200 transition-colors">Galería</a
+          >
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-blue-200 transition-colors"
+            >Ley de protección de datos</a
+          >
+        </div>
+      </div>
+
+      <!-- Newsletter y redes sociales -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-semibold mb-3">Suscríbete a nuestro boletín</h3>
+        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+          <input
+            type="email"
+            placeholder="Tu correo electrónico"
+            class="flex-1 p-2 rounded-md sm:rounded-l-md sm:rounded-r-none text-black bg-white text-sm"
+          />
+          <button
+            class="bg-primaryEvent p-2 rounded-md sm:rounded-r-md sm:rounded-l-none hover:bg-blue-600 transition-colors text-sm"
+          >
+            Enviar
+          </button>
+        </div>
+
+        <div class="flex justify-center md:justify-start gap-3">
+          <a
+            href="#"
+            target="_blank"
+            class="text-white text-xl bg-primaryEvent p-2 rounded-full hover:bg-blue-600 transition-colors"
+            aria-label="Instagram"
+          >
+            <LuInstagram />
+          </a>
+
+          <a
+            href="#"
+            target="_blank"
+            class="text-white text-xl bg-primaryEvent p-2 rounded-full hover:bg-blue-600 transition-colors"
+            aria-label="Facebook"
+          >
+            <FaFacebookF />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="mt-8 border-t bg-white text-center text-sm text-black p-4 md:p-8">
+    <p>
+      Copyright 2017 Todos los derechos reservados -  Federación latinoamericana
+      de cirugía
+    </p>
+  </div>
+</footer>

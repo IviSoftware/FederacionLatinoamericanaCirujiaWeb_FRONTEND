@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primaryEvent: #1E7C9E;
+}
