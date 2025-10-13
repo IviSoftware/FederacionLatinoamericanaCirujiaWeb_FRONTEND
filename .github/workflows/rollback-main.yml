@@ -1,0 +1,130 @@
+name: 🔄 Rollback de Despliegue (Producción)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Etiqueta para restaurar"
+        required: true
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Otorga permisos para realizar push en el repositorio
+
+    steps:
+      # Paso 1: Obtener el código más reciente (versión actual)
+      - name: 🚚 Obtener código más reciente (versión actual)
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar entorno y cachear archivos críticos
+      - name: Configurar entorno y cachear archivos críticos
+        run: |
+          # Otorgar permisos de ejecución al script de Slack y al de configuración
+          chmod +x .github/workflows/send_slack_message.sh
+          chmod +x .github/workflows/service.sh
+          # Cargar configuración mediante service.sh (este script exporta las variables de entorno)
+          ./.github/workflows/service.sh
+          # Cachear archivos críticos para no perderlos al hacer checkout de otra etiqueta
+          mkdir -p /tmp/critical_files
+          cp .github/workflows/send_slack_message.sh /tmp/critical_files/
+          cp .github/workflows/ftp_deploy_retry.sh /tmp/critical_files/
+          cp .github/workflows/ftp_deploy_node.js /tmp/critical_files/
+          cp .github/workflows/service.sh /tmp/critical_files/
+          cp .github/workflows/build_project.sh /tmp/critical_files/
+
+      # Paso 3: Notificar inicio a Slack usando el script cacheado
+      - name: Notificar inicio a Slack
+        run: |
+          if [ "$SERVICE_TYPE" = "frontend" ]; then
+            SLACK_COLOR="#439FE0"
+          else
+            SLACK_COLOR="#6200EE"
+          fi
+          /tmp/critical_files/send_slack_message.sh "Inicio de rollback en Producción para $SERVICE_NAME a la etiqueta ${{ inputs.tag_name }}" "$SLACK_COLOR" "*Inicio de rollback en Producción para $SERVICE_NAME a la etiqueta ${{ inputs.tag_name }}*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+      # Paso 4: Obtener el código de la etiqueta (versión a restaurar)
+      - name: 🚚 Obtener código de la etiqueta
+        id: checkout_code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag_name }}
+          fetch-depth: 0
+        continue-on-error: true
+
+      # Paso 5: Notificar error en Checkout (si ocurre) usando el script cacheado
+      - name: Notificar error en Checkout
+        if: steps.checkout_code.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          /tmp/critical_files/send_slack_message.sh "Error en Checkout" "danger" "*Error en Checkout: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # Paso 6: Verificar existencia de la etiqueta
+      - name: 🛠️ Verificar existencia de etiqueta
+        run: |
+          git tag -l | grep "${{ inputs.tag_name }}" || (echo "Etiqueta ${{ inputs.tag_name }} no encontrada" && exit 1)
+
+      # Paso 7: Restaurar archivos críticos desde la copia temporal
+      - name: Restaurar archivos críticos
+        run: |
+          cp /tmp/critical_files/send_slack_message.sh .github/workflows/
+          cp /tmp/critical_files/ftp_deploy_retry.sh .github/workflows/
+          cp /tmp/critical_files/ftp_deploy_node.js .github/workflows/
+          cp /tmp/critical_files/service.sh .github/workflows/
+          cp /tmp/critical_files/build_project.sh .github/workflows/
+          chmod +x .github/workflows/send_slack_message.sh
+          chmod +x .github/workflows/ftp_deploy_retry.sh
+
+      # Paso 8: Construir el proyecto mediante el script externo
+      - name: 🔨 Construir el proyecto
+        id: build_project
+        run: |
+          chmod +x .github/workflows/build_project.sh
+          ./.github/workflows/build_project.sh
+        env:
+          ENV_CONFIG: ${{ vars.ENV_CONFIG }}  # Variable de repositorio
+          GITHUB_REF: ${{ github.ref }}       # Se pasa explícitamente por si acaso
+        working-directory: .
+        continue-on-error: true
+
+      - name: Notificar error en Construcción del proyecto
+        if: steps.build_project.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          /tmp/critical_files/send_slack_message.sh "Error en Construcción del proyecto" "danger" "*Error en Construcción del proyecto: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # Paso 9: Instalar la dependencia ftp-deploy
+      - name: Instalar dependencia ftp-deploy
+        run: npm install ftp-deploy
+
+      # Paso 10: Sincronizar archivos al servidor de Producción con reintentos
+      - name: 📂 Sincronizar archivos a Producción (con reintentos)
+        id: sync_files_retry
+        run: |
+          chmod +x .github/workflows/ftp_deploy_retry.sh
+          ./.github/workflows/ftp_deploy_retry.sh
+        env:
+          staging_ftp_server: ${{ secrets.production_ftp_server }}
+          staging_ftp_username: ${{ secrets.production_ftp_username }}
+          staging_ftp_password: ${{ secrets.production_ftp_password }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          BUILD_DIR: ${{ env.BUILD_DIR }}
+        continue-on-error: true
+
+      - name: Notificar error en Sincronización de archivos
+        if: steps.sync_files_retry.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          /tmp/critical_files/send_slack_message.sh "Error en Sincronización de archivos" "danger" "*Error en Sincronización de archivos: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # Paso 11: Notificar éxito en rollback a Slack (incluye enlace al release y al entorno de Producción)
+      - name: Notificar éxito en rollback a Slack
+        if: success()
+        run: |
+          RELEASE_URL="https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag_name }}"
+          /tmp/critical_files/send_slack_message.sh "Rollback exitoso para $SERVICE_NAME a la etiqueta ${{ inputs.tag_name }}. Release: <$RELEASE_URL> | Producción: $PROD_SERVICE_URL" "good" "*Rollback exitoso para $SERVICE_NAME a la etiqueta ${{ inputs.tag_name }}. Release: <$RELEASE_URL> | Producción: $PROD_SERVICE_URL*" "${{ secrets.SLACK_WEBHOOK_URL }}"

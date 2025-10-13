@@ -1,0 +1,18 @@
+{
+    "branches": ["staging"],
+    "repositoryUrl": "https://github.com/Integra-Meetings/mailing_api",
+    "tagFormat": "v${version}",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/git",
+        {
+          "assets": ["CHANGELOG.md"],
+          "message": "🔖 Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  }
+  

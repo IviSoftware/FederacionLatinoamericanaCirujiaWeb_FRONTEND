@@ -1,0 +1,185 @@
+name: 🚀 Despliegue a Producción
+
+on:
+  push:
+    branches:
+      - main # Desplegar a producción
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # 1. Obtener el código más reciente (checkout completo para obtener tags)
+      - name: 🚚 Obtener el código más reciente
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      # 2. Cargar configuración del servicio (usando service.sh)
+      - name: Cargar configuración del servicio
+        run: |
+          chmod +x .github/workflows/service.sh
+          ./.github/workflows/service.sh
+
+      # 3. Otorgar permisos de ejecución al script de Slack
+      - name: Otorgar permisos de ejecución al script de Slack
+        run: chmod +x .github/workflows/send_slack_message.sh
+
+      # 4. Notificar inicio a Slack (incluye tag del autor del commit y color según SERVICE_TYPE)
+      - name: Notificar inicio a Slack
+        run: |
+          if [ "$SERVICE_TYPE" = "frontend" ]; then
+            SLACK_COLOR="#439FE0"
+          else
+            SLACK_COLOR="#6200EE"
+          fi
+          COMMIT_USER_TAG="${{ github.event.head_commit.author.username }}"
+          MESSAGE="Inicio de despliegue en Producción para $SERVICE_NAME (commit de @$COMMIT_USER_TAG)"
+          ./.github/workflows/send_slack_message.sh "$MESSAGE" "$SLACK_COLOR" "*$MESSAGE*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+      # 5. Obtener último tag de staging (para generar el release a partir de él)
+      - name: 🔍 Obtener último tag de staging
+        id: get_staging_tag
+        run: |
+          git fetch origin 'refs/tags/v*:refs/tags/v*'
+          LATEST_STAGING_TAG=$(git tag -l 'v*' --sort=-v:refname | grep '^v' | head -n 1)
+          if [ -z "$LATEST_STAGING_TAG" ]; then
+            echo "No se encontró ningún tag en staging"
+            exit 1
+          fi
+          echo "Latest staging tag: $LATEST_STAGING_TAG"
+          echo "tag=$LATEST_STAGING_TAG" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Notificar error en Obtener último tag de staging
+        if: steps.get_staging_tag.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Obtener último tag de staging para $SERVICE_NAME" "danger" "*Error en Obtener último tag de staging para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 6. Configurar entorno para hacer commit de cambios
+      - name: 🛠️ Configurar entorno
+        id: config_env
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+        continue-on-error: true
+
+      - name: Notificar error en Configurar entorno
+        if: steps.config_env.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Configurar entorno para $SERVICE_NAME" "danger" "*Error en Configurar entorno para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 7. Verificar si el release ya existe
+      - name: 🔍 Verificar si el release ya existe
+        id: check_release
+        uses: insightsengineering/release-existence-action@v1.0.0
+        with:
+          release-tag: ${{ steps.get_staging_tag.outputs.tag }}
+        continue-on-error: true
+
+      - name: Notificar error en Verificar release para $SERVICE_NAME
+        if: steps.check_release.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Verificar release para $SERVICE_NAME" "danger" "*Error en Verificar release para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 8. Crear Release desde último tag de staging (si aún no existe)
+      - name: 🚀 Crear Release desde último tag de staging
+        id: create_release
+        if: steps.check_release.outputs.release-exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_staging_tag.outputs.tag }}
+          release_name: "Release ${{ steps.get_staging_tag.outputs.tag }}"
+          body: "Release creado a partir del último tag de staging"
+          draft: false
+          prerelease: false
+        continue-on-error: true
+
+      - name: Notificar error en Crear Release para $SERVICE_NAME
+        if: steps.create_release.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Crear Release para $SERVICE_NAME" "danger" "*Error en Crear Release para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 9. Construir el proyecto mediante el script externo
+      - name: 🔨 Construir el proyecto
+        id: build_project
+        run: |
+          chmod +x .github/workflows/build_project.sh
+          ./.github/workflows/build_project.sh
+        env:
+          ENV_CONFIG: ${{ vars.ENV_CONFIG }}  # Variable de repositorio
+          GITHUB_REF: ${{ github.ref }}       # Se pasa explícitamente por si acaso
+        working-directory: .
+        continue-on-error: true
+
+      - name: Notificar error en Construcción del proyecto para $SERVICE_NAME
+        if: steps.build_project.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Construcción del proyecto para $SERVICE_NAME" "danger" "*Error en Construcción del proyecto para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 10. Instalar la dependencia ftp-deploy
+      - name: Instalar dependencia ftp-deploy
+        run: npm install ftp-deploy
+
+      # 11. Sincronizar archivos al servidor de Producción con reintentos
+      - name: 📂 Sincronizar archivos a Producción (con reintentos)
+        id: sync_files_retry
+        run: |
+          chmod +x .github/workflows/ftp_deploy_retry.sh
+          ./.github/workflows/ftp_deploy_retry.sh
+        env:
+          staging_ftp_server: ${{ secrets.production_ftp_server }}
+          staging_ftp_username: ${{ secrets.production_ftp_username }}
+          staging_ftp_password: ${{ secrets.production_ftp_password }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          BUILD_DIR: ${{ env.BUILD_DIR }}
+        continue-on-error: true
+
+      - name: Notificar error en Sincronización de archivos al servidor de Producción para $SERVICE_NAME
+        if: steps.sync_files_retry.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Sincronización de archivos al servidor de Producción para $SERVICE_NAME" "danger" "*Error en Sincronización de archivos al servidor de Producción para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 12. Actualizar registro de versiones
+      - name: 📜 Actualizar registro de versiones
+        id: update_versions
+        run: |
+          echo "Desplegado ${{ steps.get_staging_tag.outputs.tag }} - $(date +'%Y-%m-%d %H:%M:%S')" >> versions-main.log
+          git add versions-main.log
+          git commit -m "📝 Actualizar registro de versiones para $SERVICE_NAME"
+          git push
+        continue-on-error: true
+
+      - name: Notificar error en Actualización de registro de versiones para $SERVICE_NAME
+        if: steps.update_versions.outcome == 'failure'
+        run: |
+          ERROR_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ./.github/workflows/send_slack_message.sh "Error en Actualización de registro de versiones para $SERVICE_NAME" "danger" "*Error en Actualización de registro de versiones para $SERVICE_NAME: Revisa los detalles [aquí]($ERROR_RUN_URL).*" "${{ secrets.SLACK_WEBHOOK_URL }}"
+          exit 1
+
+      # 13. Notificar éxito a Slack (incluye enlace del servicio y commit)
+      - name: Notificar éxito a Slack
+        if: success()
+        run: |
+          COMMIT_URL="${{ github.event.head_commit.url }}"
+          MESSAGE="Despliegue a Producción exitoso para $SERVICE_NAME. Enlace del servicio: $PROD_SERVICE_URL Commit: <$COMMIT_URL>"
+          ./.github/workflows/send_slack_message.sh "$MESSAGE" "good" "*$MESSAGE*" "${{ secrets.SLACK_WEBHOOK_URL }}"

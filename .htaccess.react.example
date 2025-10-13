@@ -1,0 +1,12 @@
+RewriteEngine On
+# No escriba archivos o directorios después del dominio con diagonal
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+# Buscará directamente en index.html para permitir enlaces de estado html5
+RewriteRule ^ index.html [L]
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
