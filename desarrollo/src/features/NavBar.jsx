@@ -1,4 +1,5 @@
 import pkg from 'react-burger-menu';
+import { menuItems } from '../data/menu.ts';
 const { slide: Menu } = pkg;
 
 export const Navbar = () => {
@@ -55,18 +56,17 @@ export const Navbar = () => {
   return (
     <div>
       <Menu right styles={menuStyles}>
-        <a id="home" className="menu-item" href="/">
-          Inicio
-        </a>
-        <a id="about" className="menu-item" href="/about">
-          Acerca de
-        </a>
-        <a id="contact" className="menu-item" href="/contact">
-          Contacto
-        </a>
-        <a id="events" className="menu-item" href="/events">
-          Eventos
-        </a>
+        {menuItems.map((item) => (
+          <a 
+            key={item.id}
+            id={item.id} 
+            className="menu-item" 
+            href={item.href}
+            target={item.target || '_self'}
+          >
+            {item.label}
+          </a>
+        ))}
       </Menu>
       
       <nav className="w-full p-4 bg-primaryEvent text-white fixed top-0 left-0 z-50 shadow-md">
