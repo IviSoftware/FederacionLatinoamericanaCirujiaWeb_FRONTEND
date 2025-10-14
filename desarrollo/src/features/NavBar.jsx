@@ -70,7 +70,7 @@ export const Navbar = () => {
       </Menu>
       
       <nav className="w-full p-4 bg-primaryEvent text-white fixed top-0 left-0 z-50 shadow-md">
-        <a href='/' target='_blank' rel='noreferrer'>
+        <a href='/' rel='noreferrer' className='inline-block' >
           <img src="/img/home/logoEvento.png" alt="Logo FELAC" className="h-14" />
         </a>
       </nav>
