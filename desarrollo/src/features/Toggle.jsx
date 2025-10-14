@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const Toggle = ({ title, description, defaultOpen = false }) => {
+export const Toggle = ({children, title, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   const toggleOpen = () => {
@@ -12,7 +12,7 @@ export const Toggle = ({ title, description, defaultOpen = false }) => {
       {/* Header del toggle - siempre visible */}
       <button
         onClick={toggleOpen}
-        className="w-full px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
+        className="w-full cursor-pointer px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
         aria-expanded={isOpen}
       >
         <h3 className="text-lg font-semibold text-gray-800">
@@ -40,15 +40,11 @@ export const Toggle = ({ title, description, defaultOpen = false }) => {
       {/* Contenido expandible */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-4 py-4 text-gray-700 leading-relaxed">
-          {typeof description === 'string' ? (
-            <p>{description}</p>
-          ) : (
-            description
-          )}
+          {children}
         </div>
       </div>
     </div>

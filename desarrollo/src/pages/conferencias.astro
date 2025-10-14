@@ -11,33 +11,11 @@ import CongressCards from "../components/CongressCards.astro";
 
     <div class="max-w-4xl mx-auto">
       <!-- Toggle 1: Cirujano Internacional Distinguido -->
-      <div
-        class="border border-gray-200 rounded-lg mb-4 overflow-hidden bg-white shadow-sm"
+      <Toggle
+        title="1.- CONFERENCIA 'CIRUJANO INTERNACIONAL DISTINGUIDO'"
+        client:load
       >
-        <button
-          class="toggle-button w-full px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
-          data-toggle="toggle1"
-        >
-          <h3 class="text-lg font-semibold text-gray-800">
-            1.- CONFERENCIA "CIRUJANO INTERNACIONAL DISTINGUIDO"
-          </h3>
-          <svg
-            class="toggle-icon w-5 h-5 text-gray-600 transition-transform duration-200"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width={2}
-              d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div
-          class="toggle-content max-h-0 opacity-0 transition-all duration-300 ease-in-out overflow-hidden"
-          id="toggle1"
-        >
+        <div>
           <div class="px-4 py-4 text-gray-700 leading-relaxed">
             <p class="mb-4">
               En reunión informal del Consejo Asesor de la FELAC en noviembre de
@@ -76,36 +54,11 @@ import CongressCards from "../components/CongressCards.astro";
             </ul>
           </div>
         </div>
-      </div>
+      </Toggle>
 
       <!-- Toggle 2: Renato Pacheco Filho -->
-      <div
-        class="border border-gray-200 rounded-lg mb-4 overflow-hidden bg-white shadow-sm"
-      >
-        <button
-          class="toggle-button w-full px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
-          data-toggle="toggle2"
-        >
-          <h3 class="text-lg font-semibold text-gray-800">
-            2.- CONFERENCIAS "RENATO PACHECO FILHO"
-          </h3>
-          <svg
-            class="toggle-icon w-5 h-5 text-gray-600 transition-transform duration-200"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width={2}
-              d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div
-          class="toggle-content max-h-0 opacity-0 transition-all duration-300 ease-in-out overflow-hidden"
-          id="toggle2"
-        >
+      <Toggle title="2.- CONFERENCIAS 'RENATO PACHECO FILHO'" client:load>
+        <div>
           <div class="px-4 py-4 text-gray-700 leading-relaxed">
             <p class="mb-4">
               Conferencia Honorífica creada en 1991 en la Asamblea General
@@ -147,36 +100,11 @@ import CongressCards from "../components/CongressCards.astro";
             </ul>
           </div>
         </div>
-      </div>
+      </Toggle>
 
       <!-- Toggle 3: Hernando Abaunza Orjuela -->
-      <div
-        class="border border-gray-200 rounded-lg mb-4 overflow-hidden bg-white shadow-sm"
-      >
-        <button
-          class="toggle-button w-full px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
-          data-toggle="toggle3"
-        >
-          <h3 class="text-lg font-semibold text-gray-800">
-            CONFERENCIA "HERNANDO ABAUNZA ORJUELA"
-          </h3>
-          <svg
-            class="toggle-icon w-5 h-5 text-gray-600 transition-transform duration-200"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width={2}
-              d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div
-          class="toggle-content max-h-0 opacity-0 transition-all duration-300 ease-in-out overflow-hidden"
-          id="toggle3"
-        >
+      <Toggle title="3.- CONFERENCIA 'HERNANDO ABAUNZA ORJUELA'" client:load>
+        <div>
           <div class="px-4 py-4 text-gray-700 leading-relaxed">
             <p class="mb-4">
               En la Asamblea General Ordinaria realizada en el mes de noviembre
@@ -219,38 +147,9 @@ import CongressCards from "../components/CongressCards.astro";
             </ul>
           </div>
         </div>
-      </div>
+      </Toggle>
     </div>
   </section>
 
   <CongressCards />
 </Layout>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggleButtons =
-      document.querySelectorAll<HTMLButtonElement>(".toggle-button");
-
-    toggleButtons.forEach((button) => {
-      button.addEventListener("click", function (this: HTMLButtonElement) {
-        const toggleId = this.getAttribute("data-toggle");
-        if (!toggleId) return;
-
-        const content = document.getElementById(toggleId);
-        const icon = this.querySelector(".toggle-icon") as HTMLElement;
-
-        if (!content || !icon) return;
-
-        if (content.style.maxHeight === "0px" || !content.style.maxHeight) {
-          content.style.maxHeight = content.scrollHeight + "px";
-          content.style.opacity = "1";
-          icon.style.transform = "rotate(180deg)";
-        } else {
-          content.style.maxHeight = "0px";
-          content.style.opacity = "0";
-          icon.style.transform = "rotate(0deg)";
-        }
-      });
-    });
-  });
-</script>

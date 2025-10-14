@@ -1,0 +1,17 @@
+---
+import TitleSection from "../components/TitleSection.astro";
+import Layout from "../layouts/Layout.astro";
+import {Toggle} from "../features/Toggle";
+---
+
+<Layout title="Directivas">
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <TitleSection title="Directivas" />
+
+            <Toggle title="Directivas de FELAC" client:load>
+                <p>
+                    Aquí va el contenido de las directivas de FELAC.
+                </p>
+            </Toggle>
+        </div>
+</Layout>
