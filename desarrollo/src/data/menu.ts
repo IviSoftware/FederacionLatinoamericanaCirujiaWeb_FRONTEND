@@ -28,11 +28,15 @@ export const menuItems: MenuItem[] = [
     href: "/directivas",
   },
   {
+    id: "filiales",
+    label: "Filiales",
+    href: "/filiales",
+  },
+  {
     id: "conferencias",
     label: "Conferencias",
     href: "/conferencias",
   },
-
 ];
 
 // Función helper para obtener items del menú

@@ -1,0 +1,42 @@
+---
+import Card from "../components/Card.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Filiales">
+  <div
+    class="max-w-6xl mx-auto px-4 py-8 flex flex-col gap-4 md:grid md:grid-cols-3"
+  >
+    <Card
+      image="/img/filiales/logoSample1.png"
+      title="Asociación Argentina de Cirugía"
+      imgWidth="w-[100px]"
+      imgHeight="h-auto"
+      alt="Filial"
+    >
+      <p class="text-center">E-mail: info@aac.org.ar</p>
+    </Card>
+
+    <Card
+      image="/img/filiales/logoSample2.png"
+      title="Sociedad Boliviana de Cirugía"
+      imgWidth="w-full"
+      imgHeight="h-auto"
+      alt="Filial"
+    >
+      <p class="text-center">E-mail: ectorseq@yahoo.com</p>
+      <p class="text-center">sonalcirugia@supernet.com.bo</p>
+    </Card>
+
+    <Card
+      image="/img/filiales/logoSample3.png"
+      title="Colegio Brasileño de Cirujanos"
+      imgWidth="w-[200px]"
+      imgHeight="h-auto"
+      alt="Filial"
+    >
+        <p class="text-center">E-mail: secretaria@cbc.org.br</p>
+        <p class="text-center">cbc@cbc.org.br</p>
+    </Card>
+  </div>
+</Layout>

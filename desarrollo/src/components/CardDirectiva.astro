@@ -1,0 +1,25 @@
+---
+export interface Props {
+  image: string;
+  position?: string;
+  name?: string;
+  enterprise?: string;
+  country?: string;
+}
+
+const {image, position, name, enterprise, country} = Astro.props;
+---
+
+<div class="w-full max-w-[300px] p-8 bg-[#F5F5F5] mb-4">
+  <img
+    src={image}
+    alt="Directivas de FELAC"
+    class="w-full max-w-[200px] h-auto rounded-lg mx-auto mb-4"
+  />
+  <div>
+    <p class="font-bold text-center text-xl">{position}</p>
+    <p class="text-center text-md">{name}</p>
+    <p class="text-center text-md">{enterprise}</p>
+    <p class="text-center text-md">{country}</p>
+  </div>
+</div>
