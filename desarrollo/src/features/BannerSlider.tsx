@@ -1,7 +1,64 @@
 import { useEffect } from 'react';
 
+// Extender la interfaz Window para incluir Swiper
+declare global {
+  interface Window {
+    Swiper: any;
+  }
+}
+
+interface Slide {
+  image: string;
+  alt: string;
+  title: string;
+  subtitle: string;
+  buttonText: string;
+}
+
 export const BannerSlider = () => {
   useEffect(() => {
+    // Inyectar estilos personalizados para Swiper
+    const styleId = 'banner-slider-styles';
+    if (!document.getElementById(styleId)) {
+      const styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      styleElement.textContent = `
+        .swiper {
+          width: 100%;
+          height: 100%;
+        }
+
+        .swiper-slide {
+          text-align: center;
+          font-size: 18px;
+          background: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .swiper-pagination-bullet {
+          background: white;
+          opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet-active {
+          opacity: 1;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+          color: white;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+          font-size: 20px;
+        }
+      `;
+      document.head.appendChild(styleElement);
+    }
+
     // Cargar Swiper CSS y JS dinámicamente
     const loadSwiper = async () => {
       // Cargar CSS
@@ -49,7 +106,7 @@ export const BannerSlider = () => {
     loadSwiper();
   }, []);
 
-  const slides = [
+  const slides: Slide[] = [
     {
       image: '/img/home/bannerSample.png',
       alt: 'Banner FELAC',
@@ -74,62 +131,25 @@ export const BannerSlider = () => {
   ];
 
   return (
-    <>
-      <div className="banner-container relative">
-        <div className="swiper mySwiper">
-          <div className="swiper-wrapper">
-            {slides.map((slide, index) => (
-              <div key={index} className="swiper-slide">
-                <div className="relative w-full">
-                  <img 
-                    src={slide.image} 
-                    alt={slide.alt} 
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
+    <div className="banner-container relative">
+      <div className="swiper mySwiper">
+        <div className="swiper-wrapper">
+          {slides.map((slide, index) => (
+            <div key={index} className="swiper-slide">
+              <div className="relative w-full">
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  className="w-full h-auto object-cover"
+                />
               </div>
-            ))}
-          </div>
-          <div className="swiper-pagination"></div>
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
+            </div>
+          ))}
         </div>
+        <div className="swiper-pagination"></div>
+        <div className="swiper-button-next"></div>
+        <div className="swiper-button-prev"></div>
       </div>
-
-      <style jsx>{`
-        .swiper {
-          width: 100%;
-          height: 100%;
-        }
-
-        .swiper-slide {
-          text-align: center;
-          font-size: 18px;
-          background: #fff;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        :global(.swiper-pagination-bullet) {
-          background: white;
-          opacity: 0.5;
-        }
-
-        :global(.swiper-pagination-bullet-active) {
-          opacity: 1;
-        }
-
-        :global(.swiper-button-next),
-        :global(.swiper-button-prev) {
-          color: white;
-        }
-
-        :global(.swiper-button-next:after),
-        :global(.swiper-button-prev:after) {
-          font-size: 20px;
-        }
-      `}</style>
-    </>
+    </div>
   );
 };

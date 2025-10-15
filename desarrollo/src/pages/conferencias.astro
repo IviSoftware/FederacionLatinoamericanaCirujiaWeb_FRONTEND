@@ -1,7 +1,7 @@
 ---
 import TitleSection from "../components/TitleSection.astro";
 import Layout from "../layouts/Layout.astro";
-import { Toggle } from "../features/Toggle.jsx";
+import { Toggle } from "../features/Toggle.tsx";
 import CongressCards from "../components/CongressCards.astro";
 ---
 
@@ -14,6 +14,7 @@ import CongressCards from "../components/CongressCards.astro";
       <Toggle
         title="1.- CONFERENCIA 'CIRUJANO INTERNACIONAL DISTINGUIDO'"
         client:load
+        defaultOpen={true}
       >
         <div>
           <div class="px-4 py-4 text-gray-700 leading-relaxed">

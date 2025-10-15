@@ -1,7 +1,19 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 
-export const Toggle = ({children, title, defaultOpen = false }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+interface ToggleProps {
+  children: ReactNode;
+  title: string;
+  style?: string;
+  defaultOpen?: boolean;
+}
+
+export const Toggle = ({ children, title, style, defaultOpen = false }: ToggleProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
+
+  const toggleStyles = style
+    ? `w-full cursor-pointer px-4 py-3 text-left transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset ${style}`
+    : "w-full cursor-pointer px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none";
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -12,13 +24,13 @@ export const Toggle = ({children, title, defaultOpen = false }) => {
       {/* Header del toggle - siempre visible */}
       <button
         onClick={toggleOpen}
-        className="w-full cursor-pointer px-4 py-3 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-primaryEvent focus:ring-inset"
+        className={toggleStyles}
         aria-expanded={isOpen}
       >
         <h3 className="text-lg font-semibold text-gray-800">
           {title}
         </h3>
-        
+
         {/* Icono de flecha */}
         <svg
           className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${

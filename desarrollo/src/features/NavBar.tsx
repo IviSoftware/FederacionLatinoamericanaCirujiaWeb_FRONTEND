@@ -1,16 +1,18 @@
 import pkg from 'react-burger-menu';
 import { menuItems } from '../data/menu.ts';
+import type { MenuItem } from '../data/menu.ts';
+
 const { slide: Menu } = pkg;
 
 export const Navbar = () => {
   const menuStyles = {
     bmBurgerButton: {
-      position: 'fixed',
+      position: 'fixed' as const,
       width: '36px',
       height: '30px',
       right: '20px',
       top: '26px',
-      zIndex: 1000
+      zIndex: '1000'
     },
     bmBurgerBars: {
       background: '#ffffff'
@@ -26,7 +28,7 @@ export const Navbar = () => {
       background: '#bdc3c7'
     },
     bmMenuWrap: {
-      position: 'fixed',
+      position: 'fixed' as const,
       height: '100%'
     },
     bmMenu: {
@@ -42,7 +44,7 @@ export const Navbar = () => {
       padding: '0.8em'
     },
     bmItem: {
-      display: 'block',
+      display: 'block' as const,
       color: '#d1d1d1',
       marginBottom: '10px',
       textDecoration: 'none',
@@ -56,11 +58,11 @@ export const Navbar = () => {
   return (
     <div>
       <Menu right styles={menuStyles}>
-        {menuItems.map((item) => (
-          <a 
+        {menuItems.map((item: MenuItem) => (
+          <a
             key={item.id}
-            id={item.id} 
-            className="menu-item" 
+            id={item.id}
+            className="menu-item"
             href={item.href}
             target={item.target || '_self'}
           >
@@ -68,7 +70,7 @@ export const Navbar = () => {
           </a>
         ))}
       </Menu>
-      
+
       <nav className="w-full p-4 bg-primaryEvent text-white fixed top-0 left-0 z-50 shadow-md">
         <a href='/' rel='noreferrer' className='inline-block' >
           <img src="/img/home/logoEvento.png" alt="Logo FELAC" className="h-14" />
