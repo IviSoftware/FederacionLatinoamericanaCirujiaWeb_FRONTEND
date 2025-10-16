@@ -7,8 +7,7 @@ import type {
 } from '../types/directivas';
 import { mapAndGroupDirectivas } from '../types/directivas';
 
-const API_URL =
-  'https://cms.app.cautiva.com.mx/CMS_FELAC/cockpit-core/api/content/items/directivas';
+const API_URL = `${import.meta.env.PUBLIC_CMS_API_BASE_URL}/directivas`;
 
 export const DirectivasContainer = () => {
   const [directivasAgrupadas, setDirectivasAgrupadas] = useState<DirectivasAgrupadas>({});

@@ -1,41 +1,13 @@
 ---
-import Card from "../components/Card.astro";
 import Container from "../components/Container.astro";
 import Layout from "../layouts/Layout.astro";
+import { FilialesContainer } from "../features/FilialesContainer.tsx";
+import TitleSection from "../components/TitleSection.astro";
 ---
 
 <Layout title="Filiales">
-  <Container style="flex flex-col gap-4 md:grid md:grid-cols-3">
-    <Card
-      image="/img/filiales/logoSample1.png"
-      title="Asociación Argentina de Cirugía"
-      imgWidth="w-[100px]"
-      imgHeight="h-auto"
-      alt="Filial"
-    >
-      <p class="text-center">E-mail: info@aac.org.ar</p>
-    </Card>
-
-    <Card
-      image="/img/filiales/logoSample2.png"
-      title="Sociedad Boliviana de Cirugía"
-      imgWidth="w-full"
-      imgHeight="h-auto"
-      alt="Filial"
-    >
-      <p class="text-center">E-mail: ectorseq@yahoo.com</p>
-      <p class="text-center">sonalcirugia@supernet.com.bo</p>
-    </Card>
-
-    <Card
-      image="/img/filiales/logoSample3.png"
-      title="Colegio Brasileño de Cirujanos"
-      imgWidth="w-[200px]"
-      imgHeight="h-auto"
-      alt="Filial"
-    >
-      <p class="text-center">E-mail: secretaria@cbc.org.br</p>
-      <p class="text-center">cbc@cbc.org.br</p>
-    </Card>
+  <Container>
+    <TitleSection title="Filiales" />
+    <FilialesContainer client:load />
   </Container>
 </Layout>

@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/Container.astro";
+import TitleSection from "../components/TitleSection.astro";
+import { LibrosContainer } from "../features/LibrosContainer.tsx";
+---
+
+<Layout title="FELAC || Libros" description="Libros de la Federación Latinoamericana de Cirugía">
+  <Container>
+    <div class="text-center mb-8">
+      <TitleSection title="Libros" />
+      <p class="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Explora nuestra colección de libros y publicaciones especializadas en cirugía.
+      </p>
+    </div>
+
+    <LibrosContainer client:load />
+  </Container>
+</Layout>

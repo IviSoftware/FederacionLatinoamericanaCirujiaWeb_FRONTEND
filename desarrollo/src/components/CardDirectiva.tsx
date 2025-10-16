@@ -14,7 +14,7 @@ export const CardDirectiva = ({
   country,
 }: CardDirectivaProps) => {
   // URL base del CMS para las imágenes
-  const CMS_BASE_URL = 'https://cms.app.cautiva.com.mx/CMS_FELAC/cockpit-core/storage/uploads';
+  const CMS_BASE_URL = import.meta.env.PUBLIC_CMS_STORAGE_BASE_URL;
   const imageUrl = image.startsWith('http') ? image : `${CMS_BASE_URL}${image}`;
 
   return (

@@ -1,9 +1,17 @@
-export interface MenuItem {
+export interface SubMenuItem {
   id: string;
   label: string;
   href: string;
   target?: "_blank" | "_self";
+}
+
+export interface MenuItem {
+  id: string;
+  label: string;
+  href?: string;
+  target?: "_blank" | "_self";
   external?: boolean;
+  submenu?: SubMenuItem[];
 }
 
 export const menuItems: MenuItem[] = [
@@ -42,10 +50,26 @@ export const menuItems: MenuItem[] = [
     label: "Conferencias",
     href: "/conferencias",
   },
-    {
+  {
     id: "ediciones",
     label: "Ediciones Anteriores",
     href: "/ediciones",
+  },
+  {
+    id: "publicaciones",
+    label: "Publicaciones",
+    submenu: [
+      {
+        id: "boletines",
+        label: "Boletines",
+        href: "/boletines",
+      },
+      {
+        id: "libros",
+        label: "Libros",
+        href: "/libros",
+      },
+    ],
   },
 ];
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import pkg from 'react-burger-menu';
 import { menuItems } from '../data/menu.ts';
 import type { MenuItem } from '../data/menu.ts';
@@ -5,6 +6,11 @@ import type { MenuItem } from '../data/menu.ts';
 const { slide: Menu } = pkg;
 
 export const Navbar = () => {
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+
+  const toggleSubmenu = (itemId: string) => {
+    setOpenSubmenu(openSubmenu === itemId ? null : itemId);
+  };
   const menuStyles = {
     bmBurgerButton: {
       position: 'fixed' as const,
@@ -59,15 +65,59 @@ export const Navbar = () => {
     <div>
       <Menu right styles={menuStyles}>
         {menuItems.map((item: MenuItem) => (
-          <a
-            key={item.id}
-            id={item.id}
-            className="menu-item"
-            href={item.href}
-            target={item.target || '_self'}
-          >
-            {item.label}
-          </a>
+          <div key={item.id} className="mb-2">
+            {item.submenu ? (
+              // Item con submenú
+              <div className="menu-item-group">
+                <button
+                  onClick={() => toggleSubmenu(item.id)}
+                  className="menu-item w-full text-left flex items-center justify-between hover:text-white"
+                >
+                  <span>{item.label}</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openSubmenu === item.id ? 'rotate-180' : ''
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                {openSubmenu === item.id && (
+                  <div className="submenu pl-4 mt-2">
+                    {item.submenu.map((subItem) => (
+                      <a
+                        key={subItem.id}
+                        id={subItem.id}
+                        className="menu-item block py-2 text-base hover:text-white"
+                        href={subItem.href}
+                        target={subItem.target || '_self'}
+                      >
+                        {subItem.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              // Item simple sin submenú
+              <a
+                id={item.id}
+                className="menu-item"
+                href={item.href}
+                target={item.target || '_self'}
+              >
+                {item.label}
+              </a>
+            )}
+          </div>
         ))}
       </Menu>
 

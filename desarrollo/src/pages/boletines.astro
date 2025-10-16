@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Container from "../components/Container.astro";
+import TitleSection from "../components/TitleSection.astro";
+import { BoletinesContainer } from "../features/BoletinesContainer.tsx";
+---
+
+<Layout title="FELAC || Boletines" description="Boletines de la Federación Latinoamericana de Cirugía">
+  <Container>
+    <div class="text-center mb-8">
+      <TitleSection title="Boletines" />
+      <p class="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Consulta nuestros boletines informativos con las últimas noticias y actualizaciones de FELAC.
+      </p>
+    </div>
+
+    <BoletinesContainer client:load />
+  </Container>
+</Layout>
