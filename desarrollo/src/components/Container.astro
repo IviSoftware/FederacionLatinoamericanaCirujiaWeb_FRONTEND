@@ -1,0 +1,11 @@
+---
+export interface Props{
+    style?: string;
+}
+
+const { style } = Astro.props;
+---
+
+<div class={`max-w-6xl mx-auto px-4 py-8 ${style}`}>
+    <slot />
+</div>

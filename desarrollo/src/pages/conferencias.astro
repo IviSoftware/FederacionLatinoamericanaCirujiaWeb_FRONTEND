@@ -3,10 +3,11 @@ import TitleSection from "../components/TitleSection.astro";
 import Layout from "../layouts/Layout.astro";
 import { Toggle } from "../features/Toggle.tsx";
 import CongressCards from "../components/CongressCards.astro";
+import Container from "../components/Container.astro";
 ---
 
 <Layout title="Conferencias">
-  <section class="container mx-auto px-4 py-8">
+  <Container>
     <TitleSection title="Conferencias FELAC" />
 
     <div class="max-w-4xl mx-auto">
@@ -150,7 +151,7 @@ import CongressCards from "../components/CongressCards.astro";
         </div>
       </Toggle>
     </div>
-  </section>
+  </Container>
 
   <CongressCards />
 </Layout>

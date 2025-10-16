@@ -33,6 +33,11 @@ export const menuItems: MenuItem[] = [
     href: "/filiales",
   },
   {
+    id: "eventos",
+    label: "Eventos",
+    href: "/eventosFiliales",
+  },
+  {
     id: "conferencias",
     label: "Conferencias",
     href: "/conferencias",
