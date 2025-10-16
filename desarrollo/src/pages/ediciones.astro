@@ -1,0 +1,19 @@
+---
+import TitleSection from "../components/TitleSection.astro";
+import Layout from "../layouts/Layout.astro";
+import { VideoGrid } from "../features/VideoGrid.tsx";
+---
+
+<Layout title="FELAC || Ediciones Anteriores" description="Ediciones Anteriores de la Federación Latinoamericana de Cirugía">
+  <section class="my-8 px-4 md:px-16 lg:px-32">
+    <div class="text-center mb-8">
+      <TitleSection title="Ediciones Anteriores" />
+      <p class="text-gray-600 mt-4 max-w-3xl mx-auto">
+        Revive las mejores conferencias y presentaciones de nuestros congresos anteriores.
+        Explora contenido educativo de alta calidad impartido por expertos en cirugía de toda Latinoamérica.
+      </p>
+    </div>
+
+    <VideoGrid client:load />
+  </section>
+</Layout>

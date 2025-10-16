@@ -1,63 +1,14 @@
 ---
 import TitleSection from "../components/TitleSection.astro";
 import Layout from "../layouts/Layout.astro";
-import { Toggle } from "../features/Toggle.tsx";
-import CardDirectiva from "../components/CardDirectiva.astro";
 import Container from "../components/Container.astro";
+import { DirectivasContainer } from "../features/DirectivasContainer.tsx";
 ---
 
 <Layout title="Directivas">
   <Container>
     <TitleSection title="Directivas" />
 
-    <Toggle
-      title="Directivas de FELAC"
-      style="bg-blue-100"
-      defaultOpen={true}
-      client:load
-    >
-      <div class="w-full flex gap-4 flex-wrap">
-        <CardDirectiva
-          image="/img/directiva/directiva1.png"
-          position="Presidente"
-          name="Dr. Estuardo Behrens MACG"
-          enterprise="FACS FICS FASMBS FIFSO"
-          country="Guatemala"
-        />
-
-        <CardDirectiva
-          image="/img/directiva/directiva1.png"
-          position="Presidente"
-          name="Dr. Estuardo Behrens MACG"
-          enterprise="FACS FICS FASMBS FIFSO"
-          country="Guatemala"
-        />
-      </div>
-    </Toggle>
-
-    <Toggle
-      title="Consejo asesor"
-      style="bg-blue-100"
-      defaultOpen={true}
-      client:load
-    >
-      <div class="w-full flex gap-4 flex-wrap">
-        <CardDirectiva
-          image="/img/directiva/directiva1.png"
-          position="Presidente"
-          name="Dr. Estuardo Behrens MACG"
-          enterprise="FACS FICS FASMBS FIFSO"
-          country="Guatemala"
-        />
-
-        <CardDirectiva
-          image="/img/directiva/directiva1.png"
-          position="Presidente"
-          name="Dr. Estuardo Behrens MACG"
-          enterprise="FACS FICS FASMBS FIFSO"
-          country="Guatemala"
-        />
-      </div>
-    </Toggle>
+    <DirectivasContainer client:load />
   </Container>
 </Layout>

@@ -42,6 +42,11 @@ export const menuItems: MenuItem[] = [
     label: "Conferencias",
     href: "/conferencias",
   },
+    {
+    id: "ediciones",
+    label: "Ediciones Anteriores",
+    href: "/ediciones",
+  },
 ];
 
 // Función helper para obtener items del menú

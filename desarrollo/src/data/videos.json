@@ -1,0 +1,144 @@
+{
+  "tematicas": [
+    "Todas",
+    "Cirugía General",
+    "Cirugía Laparoscópica",
+    "Cirugía Oncológica",
+    "Cirugía Cardiovascular",
+    "Técnicas Innovadoras"
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "title": "Introducción a la Cirugía Laparoscópica",
+      "description": "Fundamentos básicos de la cirugía laparoscópica moderna",
+      "tematica": "Cirugía Laparoscópica",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg.png",
+      "duration": "15:30",
+      "speaker": "Dr. Juan Pérez"
+    },
+    {
+      "id": 2,
+      "title": "Técnicas Avanzadas en Cirugía General",
+      "description": "Procedimientos quirúrgicos de alta complejidad",
+      "tematica": "Cirugía General",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg2.png",
+      "duration": "22:45",
+      "speaker": "Dra. María González"
+    },
+    {
+      "id": 3,
+      "title": "Tratamiento Quirúrgico del Cáncer Colorrectal",
+      "description": "Estrategias modernas en oncología quirúrgica",
+      "tematica": "Cirugía Oncológica",
+      "type": "vimeo",
+      "url": "https://player.vimeo.com/video/76979871",
+      "thumbnail": "/img/home/homeSampleImg3.png",
+      "duration": "30:15",
+      "speaker": "Dr. Carlos Ramírez"
+    },
+    {
+      "id": 4,
+      "title": "Cirugía Cardiovascular Mínimamente Invasiva",
+      "description": "Nuevos abordajes en cirugía cardíaca",
+      "tematica": "Cirugía Cardiovascular",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg4.png",
+      "duration": "28:00",
+      "speaker": "Dr. Roberto Silva"
+    },
+    {
+      "id": 5,
+      "title": "Robótica en Cirugía Moderna",
+      "description": "El futuro de la cirugía asistida por robots",
+      "tematica": "Técnicas Innovadoras",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg.png",
+      "duration": "25:20",
+      "speaker": "Dra. Ana Martínez"
+    },
+    {
+      "id": 6,
+      "title": "Colecistectomía Laparoscópica Paso a Paso",
+      "description": "Técnica detallada de colecistectomía",
+      "tematica": "Cirugía Laparoscópica",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg2.png",
+      "duration": "18:45",
+      "speaker": "Dr. Fernando López"
+    },
+    {
+      "id": 7,
+      "title": "Manejo de Complicaciones en Cirugía General",
+      "description": "Estrategias para resolver complicaciones quirúrgicas",
+      "tematica": "Cirugía General",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg3.png",
+      "duration": "32:10",
+      "speaker": "Dr. Luis Hernández"
+    },
+    {
+      "id": 8,
+      "title": "Cirugía Oncológica de Mama",
+      "description": "Técnicas conservadoras y reconstructivas",
+      "tematica": "Cirugía Oncológica",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg4.png",
+      "duration": "27:30",
+      "speaker": "Dra. Patricia Mendoza"
+    },
+    {
+      "id": 9,
+      "title": "Bypass Coronario: Técnica y Resultados",
+      "description": "Procedimientos de revascularización cardíaca",
+      "tematica": "Cirugía Cardiovascular",
+      "type": "vimeo",
+      "url": "https://player.vimeo.com/video/76979871",
+      "thumbnail": "/img/home/homeSampleImg.png",
+      "duration": "35:00",
+      "speaker": "Dr. Miguel Torres"
+    },
+    {
+      "id": 10,
+      "title": "Inteligencia Artificial en Cirugía",
+      "description": "Aplicaciones de IA en el quirófano",
+      "tematica": "Técnicas Innovadoras",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg2.png",
+      "duration": "20:15",
+      "speaker": "Dr. Alberto Vega"
+    },
+    {
+      "id": 11,
+      "title": "Herniorrafia Laparoscópica",
+      "description": "Técnicas modernas de reparación herniaria",
+      "tematica": "Cirugía Laparoscópica",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg3.png",
+      "duration": "19:30",
+      "speaker": "Dra. Sofía Castro"
+    },
+    {
+      "id": 12,
+      "title": "Cirugía de Urgencias Abdominales",
+      "description": "Manejo del abdomen agudo quirúrgico",
+      "tematica": "Cirugía General",
+      "type": "youtube",
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "/img/home/homeSampleImg4.png",
+      "duration": "26:45",
+      "speaker": "Dr. Andrés Ruiz"
+    }
+  ]
+}
