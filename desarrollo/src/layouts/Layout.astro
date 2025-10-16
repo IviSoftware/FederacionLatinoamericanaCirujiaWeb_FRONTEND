@@ -2,6 +2,7 @@
 import { Navbar } from '../features/NavBar.tsx';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { BannerSlider } from '../features/BannerSlider';
 export interface Props {
   title: string;
   description?: string;
@@ -31,6 +32,7 @@ const { title, description = "Federación Latinoamericana de Cirugía" } = Astro
     
     <!-- Contenido principal con padding-top para compensar el navbar fijo -->
     <main class="pt-24 min-h-screen">
+      <BannerSlider client:idle />
       <slot />
     </main>
     
